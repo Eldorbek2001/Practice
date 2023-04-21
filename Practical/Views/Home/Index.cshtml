@@ -1,0 +1,39 @@
+﻿@model Practical.Models.Post
+
+
+@{
+    
+    ViewData["Title"] = "Home Page";
+    int currentPage = (int)ViewData["CurrentPage"];
+    int totalPages = (int)ViewData["TotalPages"];
+}
+
+<div id="posts-container">
+    @await Html.PartialAsync("_PostsPartial", Model)
+</div>
+
+@section Scripts
+    {
+    <script>
+        let currentPage = @currentPage;
+        const totalPages = @totalPages;
+        const postsUrl = '@Url.Action("Index", "Posts")';
+
+        window.addEventListener('scroll', () => {
+            const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+
+            if (scrollTop + clientHeight >= scrollHeight - 5 && currentPage < totalPages) {
+                currentPage++;
+                fetchMorePosts(currentPage);
+            }
+        });
+
+        async function fetchMorePosts(page) {
+            const response = await fetch(`${postsUrl}?page=${page}`);
+            const postsHtml = await response.text();
+            console.log(postsHtml);
+
+            document.getElementById('posts-container').insertAdjacentHTML('beforeend', postsHtml);
+        }
+    </script>
+}

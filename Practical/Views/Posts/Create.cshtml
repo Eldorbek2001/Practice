@@ -1,0 +1,123 @@
+﻿@model Practical.Models.Post
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Post</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="AcceptedAnswerId" class="control-label"></label>
+                <input asp-for="AcceptedAnswerId" class="form-control" />
+                <span asp-validation-for="AcceptedAnswerId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AnswerCount" class="control-label"></label>
+                <input asp-for="AnswerCount" class="form-control" />
+                <span asp-validation-for="AnswerCount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Body" class="control-label"></label>
+                <input asp-for="Body" class="form-control" />
+                <span asp-validation-for="Body" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ClosedDate" class="control-label"></label>
+                <input asp-for="ClosedDate" class="form-control" />
+                <span asp-validation-for="ClosedDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CommentCount" class="control-label"></label>
+                <input asp-for="CommentCount" class="form-control" />
+                <span asp-validation-for="CommentCount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CommunityOwnedDate" class="control-label"></label>
+                <input asp-for="CommunityOwnedDate" class="form-control" />
+                <span asp-validation-for="CommunityOwnedDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CreationDate" class="control-label"></label>
+                <input asp-for="CreationDate" class="form-control" />
+                <span asp-validation-for="CreationDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FavoriteCount" class="control-label"></label>
+                <input asp-for="FavoriteCount" class="form-control" />
+                <span asp-validation-for="FavoriteCount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastActivityDate" class="control-label"></label>
+                <input asp-for="LastActivityDate" class="form-control" />
+                <span asp-validation-for="LastActivityDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastEditDate" class="control-label"></label>
+                <input asp-for="LastEditDate" class="form-control" />
+                <span asp-validation-for="LastEditDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastEditorDisplayName" class="control-label"></label>
+                <input asp-for="LastEditorDisplayName" class="form-control" />
+                <span asp-validation-for="LastEditorDisplayName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastEditorUserId" class="control-label"></label>
+                <input asp-for="LastEditorUserId" class="form-control" />
+                <span asp-validation-for="LastEditorUserId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OwnerUserId" class="control-label"></label>
+                <input asp-for="OwnerUserId" class="form-control" />
+                <span asp-validation-for="OwnerUserId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ParentId" class="control-label"></label>
+                <input asp-for="ParentId" class="form-control" />
+                <span asp-validation-for="ParentId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PostTypeId" class="control-label"></label>
+                <input asp-for="PostTypeId" class="form-control" />
+                <span asp-validation-for="PostTypeId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Score" class="control-label"></label>
+                <input asp-for="Score" class="form-control" />
+                <span asp-validation-for="Score" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Tags" class="control-label"></label>
+                <input asp-for="Tags" class="form-control" />
+                <span asp-validation-for="Tags" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ViewCount" class="control-label"></label>
+                <input asp-for="ViewCount" class="form-control" />
+                <span asp-validation-for="ViewCount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

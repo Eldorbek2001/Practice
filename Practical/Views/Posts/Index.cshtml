@@ -1,0 +1,24 @@
+﻿@model Practical.Models.PostListViewModel
+
+@{
+    ViewData["Title"] = "Index";
+    int currentPage = Model.CurrentPage;
+    int totalPages = Model.TotalPages;
+    string search = Model.Search;
+}
+
+<form asp-controller="Posts" asp-action="Index" method="get">
+    <input type="text" name="search" placeholder="Search" value="@search" />
+    <button type="submit">Search</button>
+</form>
+
+<div id="posts-container">
+    @await Html.PartialAsync("_PostsPartial", Model.Posts)
+</div>
+
+@section Scripts
+{
+
+}
+
+

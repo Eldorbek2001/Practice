@@ -1,0 +1,45 @@
+﻿@model IEnumerable<Practical.Models.Post>
+
+
+    @foreach (var post in Model)
+{
+            <div class="card post">
+                <div class="user">
+                    <!-- Add your user-related elements here -->
+                </div>
+                <div class="card-body">
+            <h5 class="card-title">@post.Title</h5>
+                    <p class="card-text forty-char">
+                @if (post.Body.Length <= 150)
+                        {
+                            @post.Body
+                        }
+                        else
+                        {
+                    @post.Body.Substring(0, 150).ToString() <span>...</span>
+                        }
+                    </p>
+                    <div>
+                <a asp-action="Edit" asp-route-id="@post.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@post.Id">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@post.Id">Delete</a>
+                    </div>
+                    <div style="float:right">
+                        #answers: @post.AnswerCount
+                        #votes: @post.Score
+                        @*#userName: @Model.User.DisplayName
+                        #userReputation: @Model.User.Reputation*@
+                        @*#userBadge: @Model.Badge.Name*@
+                    </div>
+                </div>
+            </div>
+}
+
+
+<script>
+
+
+
+
+
+</script>
