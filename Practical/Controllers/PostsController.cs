@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
+
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
@@ -13,43 +16,65 @@ namespace Practical.Controllers
     {
         private readonly StackOverflow2010Context _context;
         private const int PageSize = 10; // Number of records to display per page
-        private readonly IMemoryCache _memoryCache;
 
-        public PostsController(StackOverflow2010Context context, IMemoryCache memoryCache)
+
+        private readonly IMemoryCache _memoryCache;
+        private readonly IHubContext<NotificationHub> _notificationHubContext;
+
+
+        public PostsController(StackOverflow2010Context context, IMemoryCache memoryCache, IHubContext<NotificationHub> notificationHubContext)
         {
             _context = context;
             _memoryCache = memoryCache;
+            _notificationHubContext = notificationHubContext;
+
         }
 
-        public async Task<IActionResult> Index(int page = 1)
+public async Task<IActionResult> Index(int page = 1, string phrase = null)
+{
+    if (_context.Posts == null)
+    {
+        return Problem("Entity set 'StackOverflow2010Context.Posts' is null.");
+    }
+
+    var posts = _context.Posts
+        .AsNoTracking()
+        .Where(p => p.PostTypeId == 1 || p.PostTypeId == 2);
+
+    if (!string.IsNullOrWhiteSpace(phrase))
+    {
+        posts = posts.Where(p => StackOverflow2010Context.FreeText(p.Title, phrase) || StackOverflow2010Context.FreeText(p.Body, phrase));
+    }
+
+    // Calculate the total number of pages using the cached total post count
+    var totalCount = await posts.CountAsync();
+    var pageCount = (int)Math.Ceiling(totalCount / (double)PageSize);
+
+    // Fetch the records for the current page
+    var viewPosts = await posts
+        .Skip((page - 1) * PageSize)
+        .Take(PageSize)
+        .Select(post => new PostUpdated(post)
         {
-            if (_context.Posts == null)
-            {
-                return Problem("Entity set 'StackOverflow2010Context.Posts' is null.");
-            }
+            User = _context.Users.FirstOrDefault(u => u.Id == post.OwnerUserId),
+            TotalVotes = _context.Votes.Where(v => v.PostId == post.Id).Sum(v => v.VoteTypeId),
+            UserBadges = _context.Badges.Where(b => b.UserId == post.OwnerUserId).Select(b => b.Name).ToList()
+        })
+        .ToListAsync();
 
-            var posts = _context.Posts.AsNoTracking();
+    // Create the ViewModel
+    var viewModel = new PostListViewModel
+    {
+        UpdatedPosts = viewPosts,
+        TotalPages = pageCount,
+        CurrentPage = page
+    };
 
-            // Calculate the total number of pages using the cached total post count
-            var totalCount = await GetTotalPostCountAsync();
-            var pageCount = (int)Math.Ceiling(totalCount / (double)PageSize);
+    return View(viewModel);
+}
 
-            // Fetch the records for the current page
-            var pagedPosts = await posts
-                .Skip((page - 1) * PageSize)
-                .Take(PageSize)
-                .ToListAsync();
 
-            // Create the ViewModel
-            var viewModel = new PostListViewModel
-            {
-                Posts = pagedPosts,
-                TotalPages = pageCount,
-                CurrentPage = page
-            };
 
-            return View(viewModel);
-        }
 
         // GET: Posts/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -137,6 +162,8 @@ namespace Practical.Controllers
                         throw;
                     }
                 }
+
+                await _notificationHubContext.Clients.All.SendAsync("ReceiveUpdateNotification", $"Post {id} has been updated.");
                 return RedirectToAction(nameof(Index));
             }
             return View(post);
@@ -156,10 +183,8 @@ namespace Practical.Controllers
             {
                 return NotFound();
             }
-
             return View(post);
         }
-
         // POST: Posts/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -174,32 +199,16 @@ namespace Practical.Controllers
             {
                 _context.Posts.Remove(post);
             }
-            
+
             await _context.SaveChangesAsync();
+            await _notificationHubContext.Clients.All.SendAsync("ReceiveDeleteNotification", $"Post {id} has been deleted.");
             return RedirectToAction(nameof(Index));
         }
+
 
         private bool PostExists(int id)
         {
           return (_context.Posts?.Any(e => e.Id == id)).GetValueOrDefault();
-        }
-
-        private async Task<int> GetTotalPostCountAsync()
-        {
-            // Use cache if available
-            if (!_memoryCache.TryGetValue("TotalPostCount", out int totalCount))
-            {
-                totalCount = await _context.Posts.CountAsync();
-
-                // Set cache options
-                var cacheEntryOptions = new MemoryCacheEntryOptions()
-                    .SetSlidingExpiration(TimeSpan.FromMinutes(5));
-
-                // Save data in cache
-                _memoryCache.Set("TotalPostCount", totalCount, cacheEntryOptions);
-            }
-
-            return totalCount;
         }
     }
 }

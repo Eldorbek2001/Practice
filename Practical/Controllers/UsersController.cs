@@ -44,6 +44,24 @@ namespace Practical.Controllers
             return View(user);
         }
 
+            [HttpGet("Users/JsonDetails/{userId}")]
+            public async Task<IActionResult> JsonDetails(int userId)
+            {
+                if (_context.Users == null)
+                {
+                    return NotFound();
+                }
+
+                var user = await _context.Users.FirstOrDefaultAsync(m => m.Id == userId);
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
+                return Json(user);
+            }
+
+
         // GET: Users/Create
         public IActionResult Create()
         {

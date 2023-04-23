@@ -1,21 +1,24 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
+
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    background-color: #675D50 !important;
 }
+
 .forty-char {
     width: 140ch;
     overflow: hidden;
@@ -23,10 +26,93 @@ body {
     text-overflow: ellipsis;
 }
 
+.post-iframe {
+    width: 100%;
+    height: 200px;
+    border: none;
+}
 
-.post{
+.card-text {
+    word-wrap: break-word;
+    white-space: pre-wrap;
+}
+
+
+.post {
     width: auto;
 }
-.card{
-    display:inline-table;
+
+.card {
+    display: inline-table;
+}
+
+.dropdown-menu {
+    width: 1000px;
+}
+
+.navbar-brand {
+    margin: auto;
+    font-family: monospace, 'Courier New', Courier;
+    font-size: 40px;
+    color: white;
+    background-color: #675D50;
+}
+
+.navbar {
+    background-color: #675D50 !important;
+    
+}
+
+.col-md-2 {
+    background-color: #F3DEBA;
+}
+
+.card-body {
+    background-color: #A9907E;
+    padding-bottom: 25px;
+}
+
+#gridDropdown {
+    color: black;
+    background-color: #EC994B;
+    height:90%;
+}
+
+.edd {
+    float: right !important;
+    padding-bottom: 0px;
+}
+
+.show {
+    background-color: beige !important;
+    
+}
+
+
+/* Set font color for page links */
+.page-link {
+    color: #555;
+}
+
+/* Set background color for page links on hover */
+.page-link:hover {
+    color: #000;
+    background-color: #ddd;
+    border-color: #ddd;
+}
+
+/* Set background color for active page */
+.page-item.active .page-link {
+    background-color: #666;
+    border-color: #666;
+}
+
+/* Set background color for disabled pages */
+.page-item.disabled .page-link {
+    color: #bbb;
+    background-color: #f1f1f1;
+    border-color: #f1f1f1;
+}
+.user-img {
+    width: 50px;
 }

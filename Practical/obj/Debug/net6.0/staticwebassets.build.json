@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "7qCuvlfxTCyh3ctARadaR/TsckNiPM3FGt95KgM0C/U=",
+  "Hash": "6OhhHrHiNnErb4nfd5gTOXpiRPDQ/EYj48l14Y5ljc4=",
   "Source": "Practical",
   "BasePath": "_content/Practical",
   "Mode": "Default",
@@ -83,6 +83,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\favicon.ico"
+    },
+    {
+      "Identity": "C:\\Users\\eldor\\source\\repos\\Practical\\Practical\\wwwroot\\images\\user.png",
+      "SourceId": "Practical",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\eldor\\source\\repos\\Practical\\Practical\\wwwroot\\",
+      "BasePath": "_content/Practical",
+      "RelativePath": "images/user.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\user.png"
     },
     {
       "Identity": "C:\\Users\\eldor\\source\\repos\\Practical\\Practical\\wwwroot\\js\\site.js",

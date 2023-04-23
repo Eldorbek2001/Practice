@@ -44,5 +44,6 @@ public partial class Post
     public string? Title { get; set; }
 
     public int ViewCount { get; set; }
+    
 
 }

@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.SignalR;
 using Practical.Controllers;
 using Practical.Models;
 using System.Configuration;
@@ -7,13 +8,17 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddDbContext<StackOverflow2010Context>(options =>
-    options.UseSqlServer("\"Server=(localdb)\\\\test;Database=StackOverflow2010;Trusted_Connection=True;"));
-
+options.UseSqlServer("Server=ELDORBEK2001\\MSSQLSERVER01;Database=StackOverflow2010;Trusted_Connection=True;"));
 builder.Services.AddControllersWithViews();
+
+
+
+builder.Services.AddSignalR();
+builder.Services.AddScoped<BadgesController>();
 builder.Services.AddScoped<PostsController>();
 builder.Services.AddScoped<UsersController>();
 
-
+builder.Services.AddEndpointsApiExplorer();
 
 var app = builder.Build();
 
@@ -37,14 +42,9 @@ app.UseEndpoints(endpoints =>
     endpoints.MapControllerRoute(
         name: "default",
         pattern: "{controller=Posts}/{action=Index}/{id?}");
+
+    endpoints.MapHub<NotificationHub>("/notificationhub");
 });
 
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Posts}/{action=Index}/{id?}");
-
 app.Run();
-
-
-

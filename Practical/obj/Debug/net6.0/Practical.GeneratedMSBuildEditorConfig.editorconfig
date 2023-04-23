@@ -16,6 +16,26 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = C:\Users\eldor\source\repos\Practical\Practical
 build_property._RazorSourceGeneratorDebug = 
 
+[C:/Users/eldor/source/repos/Practical/Practical/Views/Badges/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQmFkZ2VzXENyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/eldor/source/repos/Practical/Practical/Views/Badges/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQmFkZ2VzXERlbGV0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/eldor/source/repos/Practical/Practical/Views/Badges/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQmFkZ2VzXERldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/eldor/source/repos/Practical/Practical/Views/Badges/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQmFkZ2VzXEVkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/eldor/source/repos/Practical/Practical/Views/Badges/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQmFkZ2VzXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/eldor/source/repos/Practical/Practical/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -46,10 +66,6 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/eldor/source/repos/Practical/Practical/Views/Posts/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUG9zdHNcSW5kZXguY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/eldor/source/repos/Practical/Practical/Views/Posts/_PostsPartial.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUG9zdHNcX1Bvc3RzUGFydGlhbC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/eldor/source/repos/Practical/Practical/Views/Shared/Error.cshtml]

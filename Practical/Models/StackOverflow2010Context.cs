@@ -6,6 +6,11 @@ namespace Practical.Models;
 
 public partial class StackOverflow2010Context : DbContext
 {
+
+    [DbFunction("FREETEXT", IsBuiltIn = true)]
+    public static bool FreeText(string property, string searchTerm) => throw new NotImplementedException();
+
+
     public StackOverflow2010Context()
     {
     }
@@ -34,8 +39,12 @@ public partial class StackOverflow2010Context : DbContext
     public virtual DbSet<VoteType> VoteTypes { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=(localdb)\\test;Database=StackOverflow2010;Trusted_Connection=True;");
+    {
+        optionsBuilder.UseLazyLoadingProxies();
+        optionsBuilder.UseSqlServer("Server=ELDORBEK2001\\MSSQLSERVER01;Database=StackOverflow2010;Trusted_Connection=True;TrustServerCertificate=True;");
+
+    }
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -4,21 +4,213 @@
     ViewData["Title"] = "Index";
     int currentPage = Model.CurrentPage;
     int totalPages = Model.TotalPages;
-    string search = Model.Search;
+    string phrase = Model.Phrase;
 }
 
-<form asp-controller="Posts" asp-action="Index" method="get">
-    <input type="text" name="search" placeholder="Search" value="@search" />
-    <button type="submit">Search</button>
-</form>
 
-<div id="posts-container">
-    @await Html.PartialAsync("_PostsPartial", Model.Posts)
+@*Notification for Deletion*@
+<div class="modal" tabindex="-1" role="dialog" id="deleteNotificationModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Post Deletion Notification</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="deleteNotificationMessage"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="location.reload();">Refresh</button>
+            </div>
+        </div>
+    </div>
 </div>
 
-@section Scripts
-{
 
-}
+<div class="container">
+    <form asp-controller="Posts" asp-action="Index" method="get" class="my-3">
+        <div class="input-group">
+            <input type="text" name="phrase" placeholder="@phrase" value="@phrase" class="form-control" />
+            <button type="submit" class="btn btn-secondary">Search</button>
+        </div>
+    </form>
+
+    <div id="posts-container" class="mb-3">
+        <div class="row row-cols-1 g-3">
+            @foreach (PostUpdated post in Model.UpdatedPosts)
+            {
+                <div class="col">
+                    <div class="card w-100">
+                        <div class="row g-0">
+                            <div class="col-md-2 d-flex flex-column align-items-center">
+                                <div class="image-placeholder mt-3">
+                                    <img class="user-img" src="images/user.png">
+                                </div>
+
+                                <div class="user p-3" data-userid="@post.OwnerUserId">
+
+                                    @*HandleAnonym/Deleted*@
+                                    @if (post.User == null)
+                                    {
+
+                                        <div>
+                                            <strong>Name: </strong> <span>Deleted/Anonymous</span>
+                                        </div>
+                                        <div>
+                                            <strong>Reputation:</strong><span>0</span>
+                                        </div>
+
+                                    }
+                                    else
+                                    {
+                                        <div>
+                                            <strong>Name: </strong> <span>@post.User.DisplayName</span>
+                                        </div>
+                                        <div>
+                                            <strong>Reputation:</strong> <span>@post.User.Reputation</span>
+                                        </div>
+                                    }
+                                    <div class="dropdown">
+                                        <button class="btn btn-secondary dropdown-toggle" type="button" id="gridDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Badges
+                                        </button>
+                                        <div class="dropdown-menu" aria-labelledby="gridDropdown" style="padding: 0.5rem;">
+                                            <div class="container">
+                                                <div class="row w-100">
+                                                    @foreach (var badgeGroup in post.UserBadges.GroupBy(b => b).Where(g => g.Any()).OrderByDescending(g => g.Count()))
+                                                    {
+                                                        <div class="col-3">
+                                                            <li>
+                                                                <a class="dropdown-item">
+                                                                    @badgeGroup.Key  @if (@badgeGroup.Count() != 1)
+                                                                    {
+                                                                        <span>(@badgeGroup.Count())</span>
+                                                                    }
+                                                                </a>
+                                                            </li>
+                                                        </div>
+                                                    }
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-10">
+                                <div class="card-body">
+                                    @if (post.PostTypeId == 2)
+                                    {
+                                        <h5 class="card-title">answer</h5>
+                                    }
+                                    else
+                                    {
+                                        <h5 class="card-title">@post.Title</h5>
+                                    }
+                                    <p class="card-text">
+                                        @if (post.Body.Length <= 150)
+                                        {
+                                            @post.Body
+                                        }
+                                        else
+                                        {
+                                            @post.Body.Substring(0, 150).ToString() <span>...</span>
+                                        }
+                                    </p>
+                                    <div class="mb-3 edd">
+                                        <a asp-action="Edit" asp-route-id="@post.Id" class="btn btn-sm btn-primary">Edit</a>
+                                        <a asp-action="Details" asp-route-id="@post.Id" class="btn btn-sm btn-info">Details</a>
+                                        <a asp-action="Delete" asp-route-id="@post.Id" class="btn btn-sm btn-danger">Delete</a>
+                                    </div>
+                                    <div class="d-flex">
+                                        <span class="me-3">Total answers: @post.AnswerCount</span>
+                                        <span>Total votes: @post.TotalVotes</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+
+    </div>
+
+    @if (totalPages > 1)
+    {
+            <div style="text-align: center;">
+                <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
+                        @if (currentPage > 1)
+                        {
+                            <li class="page-item"><a href="@Url.Action("Index", "Posts", new { page = 1, phrase })" class="page-link">First</a></li>
+                            <li class="page-item"><a href="@Url.Action("Index", "Posts", new { page = currentPage - 1, phrase })" class="page-link">Prev</a></li>
+                        }
+
+                        @if (currentPage > 3)
+                        {
+                            <li class="page-item disabled"><span class="page-link">...</span></li>
+                        }
+
+                        @for (int i = Math.Max(1, currentPage - 2); i <= Math.Min(currentPage + 2, totalPages); i++)
+                        {
+                            if (i == currentPage)
+                            {
+                                <li class="page-item active"><span class="page-link">@i</span></li>
+                            }
+                            else
+                            {
+                                <li class="page-item"><a href="@Url.Action("Index", "Posts", new { page = i, phrase })" class="page-link">@i</a></li>
+                            }
+                        }
+
+                        @if (currentPage < totalPages - 2)
+                        {
+                            <li class="page-item disabled"><span class="page-link">...</span></li>
+                        }
+
+                        @if (currentPage < totalPages)
+                        {
+                            <li class="page-item"><a href="@Url.Action("Index", "Posts", new { page = currentPage + 1, phrase })" class="page-link">Next</a></li>
+                            <li class="page-item"><a href="@Url.Action("Index", "Posts", new { page = totalPages, phrase })" class="page-link">Last</a></li>
+                        }
+                    </ul>
+                </nav>
+            </div>
+
+    }
+
+
+
+    @section Scripts {
+        <script>
+            // Initialize a SignalR connection
+            const connection = new signalR.HubConnectionBuilder()
+                .withUrl("/notificationhub")
+                .withAutomaticReconnect()
+                .configureLogging(signalR.LogLevel.Information)
+                .build();
+
+            // Define functions to handle the notifications
+            connection.on("ReceiveUpdateNotification", (message) => {
+                console.log("Update notification received: ", message);
+                // Perform any updates required based on the received message
+            });
+
+            connection.on("ReceiveDeleteNotification", (message) => {
+                console.log("Post Deletion Notification: ", message);
+                // Update the UI or perform other actions based on the message
+                document.getElementById("deleteNotificationMessage").innerText = message + " Please refresh your window!";
+                $("#deleteNotificationModal").modal("show");
+            });
+
+            // Start the connection
+            connection.start().catch((err) => console.error(err.toString()));
+
+        </script>
+    }
 
 
