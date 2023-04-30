@@ -41,7 +41,7 @@ public partial class StackOverflow2010Context : DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.UseLazyLoadingProxies();
-        optionsBuilder.UseSqlServer("Server=ELDORBEK2001\\MSSQLSERVER01;Database=StackOverflow2010;Trusted_Connection=True;TrustServerCertificate=True;");
+        optionsBuilder.UseSqlServer("connectionstring");
 
     }
 

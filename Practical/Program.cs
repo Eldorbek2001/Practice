@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddDbContext<StackOverflow2010Context>(options =>
-options.UseSqlServer("Server=ELDORBEK2001\\MSSQLSERVER01;Database=StackOverflow2010;Trusted_Connection=True;"));
+options.UseSqlServer("connectionString"));
 builder.Services.AddControllersWithViews();
 
 
